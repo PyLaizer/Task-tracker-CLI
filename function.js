@@ -1,4 +1,14 @@
 
+import * as fs from 'fs';
+import {
+	addFunc
+} from "./add.js"
+const argv = process.argv
+const commands = [
+	"add", "update", "delete", "mark-in-progress", "mark-done", "list"
+];
+
+  
 const welcomeFunc = () => {
 	console.log("*******  Welcome To Task Tracker CLI  *******");
 	console.log("A cli application to track your task and manage your to-do list")
@@ -17,6 +27,49 @@ const welcomeFunc = () => {
 	return 
 }
 
+
+const checkArgOne = (arg) => {
+	if(!commands.includes(arg)){
+		console.log(`Error: ${arg} is not a recognized command`)
+		return
+	}
+		taskHandlerFunc(arg)
+}
+
+
+const checkArgTwo = (command,arg) => {
+	switch(command) {
+		case "add":
+			if(!arg){
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli add "Buy groceries" or mycli add groceries`)
+				return
+			}
+			addFunc(arg)
+  }
+}
+
+
+const taskHandlerFunc = (command) => {
+	switch(command) {
+		case "add":
+      let arg = argv[3]
+      checkArgTwo(command,arg);     
+	}
+}
+
+
+const writeFunc = (file) => {
+	fs.writeFile('task.json', file, function (err) {
+		if (err){
+			console.log('Error: Encountered error while writing into json file')
+			return
+		}
+		console.log('Task created successfully');
+		return
+	  })
+}
+
 export {
-	welcomeFunc
+	welcomeFunc,checkArgOne,
+	writeFunc
 }

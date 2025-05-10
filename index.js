@@ -1,24 +1,19 @@
 #!/usr/bin/env node
 
 // Imports
-import { welcomeFunc } from './function.js';
-import * as fs from 'fs';
+import { 
+	welcomeFunc, checkArgOne 
+} from './function.js';
 
 
 const argv = process.argv;
 
-const commands = [
-  "add", "update", "delete", "mark-in-progress", "mark-done", "list"
-];
+let arg = argv[2]
 
-let firstArg = argv[2]
-
-if(!firstArg){
+if(!arg){
 	welcomeFunc();
 }else{
-	if(!commands.includes(firstArg)){
-		console.log(`Error: ${firstArg} is not a recognized command`)
-	}
+	checkArgOne(arg.toLowerCase());
 }
 
 
