@@ -35,8 +35,9 @@ const addFunc = (task) => {
 						return
 				}
 				const fileObject = JSON.parse(data)
-				let objectLength = Object.keys(fileObject).length;
-				let id = (objectLength + 1).toString()
+				let objectKeys = Object.keys(fileObject)
+				let max = Math.max(...objectKeys);
+				let id = (max + 1).toString()
 				fileObject[id] = {
 						"id":id,
 						"description":task,
