@@ -1,7 +1,7 @@
 
 import * as fs from 'fs';
 import { addFunc } from "./add.js"
-import { updateFunc } from './update.js';
+import { updateFunc, updateStatusFunc } from './update.js';
 import { deleteFunc } from './delete.js';
 
 const argv = process.argv;
@@ -40,48 +40,84 @@ const checkArgumentOne = (arg1) => {
 	checkNextArguments(arg1,arg2,arg3,arg4)
 }
 
+const validateId = (value) => {
+	const isValidId = /^\d+$/.test(value);
+	return isValidId
+}
+
 
 const checkNextArguments = (command,arg2,arg3,arg4) => {
+	let validId
 	switch(command) {
 
 		case "add":
 			if(!arg2){
-				console.log(`Error: Expected an argument after the ${command} command e.g mycli add <task>`)
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli ${command} <task>`)
 				return
 			}
 			addFunc(arg2);
+			break
 
 		case "update":
 			if(!arg2){
-				console.log(`Error: Expected an argument after the ${command} command e.g mycli update 1 <task>`)
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli ${command} 1 <task>`)
 				return
 			}
-			const isValidId = /^\d+$/.test(arg2);
-			if(!isValidId){
+
+			validId = validateId(arg2)
+			if(!validId){
 				console.log(`Error: Argument after the ${command} command is not a valid integer.`)
 				return
 			}
+
 			if(!arg3){
-				console.log(`Error: Missing task argument. Expected task argument after id:  ${arg2}`)
+				console.log(`Error: Missing task argument. Expected task argument after id: ${arg2}`)
 				return
 			}
 			updateFunc(arg2,arg3);
+			break
 		
 		case "delete":
 			if(!arg2){
-				console.log(`Error: Expected an argument after the ${command} command e.g mycli delete <id>`)
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli ${command} <id>`)
 				return
 			}
 
-			if(Number(arg2) == false){
-				console.log(`Invalid id argument, try again with a valid id`)
+			validId = validateId(arg2)
+			if(!validId){
+				console.log(`Error: Argument after the ${command} command is not a valid integer.`)
 				return
 			}
-			deleteFunc(arg2)
+			deleteFunc(arg2);
+			break
 
-
+		case "mark-in-progress":
+			if(!arg2){
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli ${command} <id>`)
+				return
+			}
 			
+			validId = validateId(arg2)
+			if(!validId){
+				console.log(`Error: Argument after the ${command} command is not a valid integer.`)
+				return
+			}
+			updateStatusFunc(arg2, command);
+			break
 
+		case "mark-done":	
+			if(!arg2){
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli ${command} <id>`)
+				return
+			}
+
+			validId = validateId(arg2)
+			if(!validId){
+				console.log(`Error: Argument after the ${command} command is not a valid integer.`)
+				return
+			}
+			updateStatusFunc(arg2, command);
+			break
   }
 }
 
