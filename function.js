@@ -1,9 +1,8 @@
 
 import * as fs from 'fs';
-import {
-	addFunc
-} from "./add.js"
+import { addFunc } from "./add.js"
 import { updateFunc } from './update.js';
+import { deleteFunc } from './delete.js';
 
 const argv = process.argv;
 
@@ -66,22 +65,25 @@ const checkNextArguments = (command,arg2,arg3,arg4) => {
 				console.log(`Error: Missing task argument. Expected task argument after id:  ${arg2}`)
 				return
 			}
-			updateFunc(arg2,arg3)
+			updateFunc(arg2,arg3);
+		
+		case "delete":
+			if(!arg2){
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli delete <id>`)
+				return
+			}
+
+			if(Number(arg2) == false){
+				console.log(`Invalid id argument, try again with a valid id`)
+				return
+			}
+			deleteFunc(arg2)
+
 
 			
 
   }
 }
-
-
-// const taskHandlerFunc = (command) => {
-// 	switch(command) {
-// 		case "add":
-// 			checkArgTwo(command,arg1);   
-// 	  case "update":
-// 			checkArgTwo(command,arg1); 
-// 	}
-// }
 
 
 const writeFunc = (file,operation) => {
@@ -97,13 +99,17 @@ const writeFunc = (file,operation) => {
 				return
 			case 'update':
 				console.log('Task updated successfully');
-				return		
+				return	
+			case 'delete':
+				console.log('Task deleted successfully');
+				return			
 		}
 
 	  })
 }
 
 export {
-	welcomeFunc,checkArgumentOne,
+	welcomeFunc,
+	checkArgumentOne,
 	writeFunc
 }
