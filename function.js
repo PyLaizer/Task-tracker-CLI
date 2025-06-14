@@ -3,11 +3,17 @@ import * as fs from 'fs';
 import {
 	addFunc
 } from "./add.js"
-const argv = process.argv
+import { updateFunc } from './update.js';
+
+const argv = process.argv;
+
+const arg2 = argv[3]
+const arg3 = argv[4]
+const arg4 = argv[5]
+
 const commands = [
 	"add", "update", "delete", "mark-in-progress", "mark-done", "list"
 ];
-
   
 const welcomeFunc = () => {
 	console.log("*******  Welcome To Task Tracker CLI  *******");
@@ -27,49 +33,77 @@ const welcomeFunc = () => {
 	return 
 }
 
-
-const checkArgOne = (arg) => {
-	if(!commands.includes(arg)){
-		console.log(`Error: ${arg} is not a recognized command`)
+const checkArgumentOne = (arg1) => {
+	if(!commands.includes(arg1)){
+		console.log(`Error: ${arg1} is not a recognized command`)
 		return
 	}
-		taskHandlerFunc(arg)
+	checkNextArguments(arg1,arg2,arg3,arg4)
 }
 
 
-const checkArgTwo = (command,arg) => {
+const checkNextArguments = (command,arg2,arg3,arg4) => {
 	switch(command) {
+
 		case "add":
-			if(!arg){
-				console.log(`Error: Expected an argument after the ${command} command e.g mycli add "Buy groceries" or mycli add groceries`)
+			if(!arg2){
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli add <task>`)
 				return
 			}
-			addFunc(arg)
+			addFunc(arg2);
+
+		case "update":
+			if(!arg2){
+				console.log(`Error: Expected an argument after the ${command} command e.g mycli update 1 <task>`)
+				return
+			}
+			const isValidId = /^\d+$/.test(arg2);
+			if(!isValidId){
+				console.log(`Error: Argument after the ${command} command is not a valid integer.`)
+				return
+			}
+			if(!arg3){
+				console.log(`Error: Missing task argument. Expected task argument after id:  ${arg2}`)
+				return
+			}
+			updateFunc(arg2,arg3)
+
+			
+
   }
 }
 
 
-const taskHandlerFunc = (command) => {
-	switch(command) {
-		case "add":
-      let arg = argv[3]
-      checkArgTwo(command,arg);     
-	}
-}
+// const taskHandlerFunc = (command) => {
+// 	switch(command) {
+// 		case "add":
+// 			checkArgTwo(command,arg1);   
+// 	  case "update":
+// 			checkArgTwo(command,arg1); 
+// 	}
+// }
 
 
-const writeFunc = (file) => {
+const writeFunc = (file,operation) => {
 	fs.writeFile('task.json', file, function (err) {
 		if (err){
 			console.log('Error: Encountered error while writing into json file')
 			return
 		}
-		console.log('Task created successfully');
-		return
+
+		switch(operation){
+			case 'add':
+				console.log('Task created successfully');
+				return
+			case 'update':
+				console.log('Task updated successfully');
+				return		
+		}
+
 	  })
 }
 
 export {
-	welcomeFunc,checkArgOne,
+	welcomeFunc,checkArgumentOne,
 	writeFunc
 }

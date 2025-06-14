@@ -2,18 +2,16 @@
 
 // Imports
 import { 
-	welcomeFunc, checkArgOne 
+	welcomeFunc, checkArgumentOne
 } from './function.js';
 
-
 const argv = process.argv;
+let arg1 = argv[2]
 
-let arg = argv[2]
-
-if(!arg){
+if(!arg1){
 	welcomeFunc();
 }else{
-	checkArgOne(arg.toLowerCase());
+	checkArgumentOne(arg1);
 }
 
 

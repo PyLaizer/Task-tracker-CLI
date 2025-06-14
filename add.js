@@ -26,7 +26,7 @@ const addFunc = (task) => {
 				}
 
 				const taskJson = JSON.stringify(fileObject)
-				writeFunc(taskJson)
+				writeFunc(taskJson, 'add')
 			});
 		}else {
 			fs.readFile('task.json', function(err, data) {
@@ -46,7 +46,7 @@ const addFunc = (task) => {
 				}
 
 				const taskJson = JSON.stringify(fileObject)
-				writeFunc(taskJson)
+				writeFunc(taskJson, 'add')
 			});
 		}
 	});  
