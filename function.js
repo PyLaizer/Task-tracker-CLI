@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { addFunc } from "./add.js"
 import { updateFunc, updateStatusFunc } from './update.js';
 import { deleteFunc } from './delete.js';
+import { viewAllFunc, viewByStatusFunc } from './view.js';
 
 const argv = process.argv;
 
@@ -118,6 +119,21 @@ const checkNextArguments = (command,arg2,arg3,arg4) => {
 			}
 			updateStatusFunc(arg2, command);
 			break
+
+		case "list":
+			if(!arg2){
+				viewAllFunc()
+			}else{
+				const statuses = ['done', 'todo', 'in-progress']
+				if(!statuses.includes(arg2)){
+					console.log(`Error: ${arg2} is not a recognized status`)
+					return
+				}else{
+					viewByStatusFunc(arg2)
+				}
+			}
+			break
+
   }
 }
 

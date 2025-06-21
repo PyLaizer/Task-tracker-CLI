@@ -40,11 +40,11 @@ export const updateStatusFunc = (index, status) => {
         
         switch(status){
             case "mark-in-progress":
-                item['status'] = status;
+                item['status'] = "in-progress";
                 item['updated_at'] = new Date().toString();
                 break;
             case "mark-done":  
-                item['status'] = status;
+                item['status'] = 'done';
                 item['updated_at'] = new Date().toString();
                 break;
         }
